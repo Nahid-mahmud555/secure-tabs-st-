@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self'; object-src 'self'" />
+  <title>Session Vault — Settings</title>
+  <link rel="stylesheet" href="options.css" />
+</head>
+<body>
+  <div class="wrap">
+    <header class="page-header">
+      <img src="icons/icon48.png" alt="" width="28" height="28" />
+      <h1>Session Vault Settings</h1>
+    </header>
+
+    <section class="card">
+      <h2>Auto-lock</h2>
+      <p class="muted">The vault re-locks automatically to limit how long decrypted data stays in memory.</p>
+
+      <label class="row">
+        <span>Lock after inactivity</span>
+        <select id="autoLockMinutes">
+          <option value="1">1 minute</option>
+          <option value="5">5 minutes</option>
+          <option value="15">15 minutes</option>
+          <option value="30">30 minutes</option>
+          <option value="60">1 hour</option>
+          <option value="240">4 hours</option>
+        </select>
+      </label>
+
+      <label class="row toggle-row">
+        <span>Lock immediately when system goes idle</span>
+        <input type="checkbox" id="lockOnIdle" />
+      </label>
+
+      <label class="row toggle-row">
+        <span>Lock immediately when screen is locked</span>
+        <input type="checkbox" id="lockOnScreenLock" />
+      </label>
+
+      <p class="save-hint" id="settingsSaved" hidden>Saved.</p>
+    </section>
+
+    <section class="card">
+      <h2>Change master password</h2>
+      <p class="muted">
+        Re-encrypts every saved session with the new password. This does not change any website
+        logins — Session Vault only stores tab/window snapshots, not credentials.
+      </p>
+      <form id="passwordForm">
+        <label class="field">
+          <span>Current password</span>
+          <input type="password" id="currentPassword" required autocomplete="current-password" />
+        </label>
+        <label class="field">
+          <span>New password</span>
+          <input type="password" id="newPassword" minlength="8" required autocomplete="new-password" />
+        </label>
+        <label class="field">
+          <span>Confirm new password</span>
+          <input type="password" id="confirmNewPassword" minlength="8" required autocomplete="new-password" />
+        </label>
+        <p class="error" id="passwordError" hidden></p>
+        <p class="success" id="passwordSuccess" hidden>Password updated.</p>
+        <button type="submit" class="btn btn-primary">Update Password</button>
+      </form>
+    </section>
+
+    <section class="card">
+      <h2>Backup</h2>
+      <p class="muted">
+        Backups remain encrypted with your current master password — this file is safe to store,
+        but you'll still need that password to restore it.
+      </p>
+      <div class="btn-row">
+        <button id="exportBtn" class="btn">Export encrypted backup</button>
+        <label class="btn file-btn">
+          Import backup
+          <input type="file" id="importFile" accept="application/json" hidden />
+        </label>
+      </div>
+      <p class="error" id="backupError" hidden></p>
+      <p class="success" id="backupSuccess" hidden></p>
+    </section>
+
+    <section class="card danger-zone">
+      <h2>Danger zone</h2>
+      <p class="muted">
+        Permanently deletes the vault and every saved session from this browser. This cannot be
+        undone unless you have an exported backup.
+      </p>
+      <button id="wipeBtn" class="btn btn-danger">Delete vault &amp; all sessions</button>
+    </section>
+
+    <p class="footer-note">
+      Session Vault stores everything locally, encrypted with AES-256-GCM. Nothing is ever sent
+      over the network.
+    </p>
+  </div>
+
+  <script type="module" src="options.js"></script>
+</body>
+</html>
