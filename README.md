@@ -3,24 +3,20 @@
 # 🛡️ Secure Tabs (ST)
 
 ### **Your Encrypted Workspace**
-*Private • Fast • Minimal • Secure*
+*Private • Secure • Fast • Minimal*
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Manifest-V3-orange?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/Encryption-AES--256--GCM-success?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/Security-Zero--Knowledge-blue?style=for-the-badge" />
-  <img src="https://img.shields.io/badge/License-MIT-red?style=for-the-badge" />
+<p>
+  <img src="https://img.shields.io/badge/Manifest-V3-orange?style=for-the-badge" alt="Manifest V3">
+  <img src="https://img.shields.io/badge/Encryption-AES--256--GCM-success?style=for-the-badge" alt="AES-256-GCM">
+  <img src="https://img.shields.io/badge/Security-Zero--Knowledge-blue?style=for-the-badge" alt="Zero Knowledge">
+  <img src="https://img.shields.io/badge/License-MIT-red?style=for-the-badge" alt="MIT">
 </p>
 
-<p align="center">
-  <strong>A modern privacy-first browser extension that securely saves, encrypts, and restores your browsing sessions.</strong>
+<p>
+A modern privacy-first browser extension that securely saves, encrypts, and restores your browsing sessions.
 </p>
 
-<img src="https://via.placeholder.com/1100x350/0d1117/58a6ff?text=Secure+Tabs+(ST)" width="100%" />
-
-<br>
-
-⭐ **If you like this project, don't forget to star the repository!**
+⭐ **If you like this project, don't forget to Star the repository!**
 
 </div>
 
@@ -28,115 +24,51 @@
 
 # 📖 About
 
-**Secure Tabs (ST)** is an advanced browser extension built for people who care about **privacy**, **security**, and **productivity**.
+**Secure Tabs (ST)** is a modern browser extension built for people who care about **privacy**, **security**, and **productivity**.
 
-Unlike traditional session managers, Secure Tabs encrypts every saved session locally before storing it. Your browsing history never leaves your computer, giving you complete ownership of your data.
+Unlike ordinary session managers, Secure Tabs encrypts every saved session locally before storage. Your browsing sessions never leave your device, giving you complete ownership of your data.
 
-Whether you're a **developer**, **student**, **researcher**, or **Linux Live USB user**, Secure Tabs ensures your workspace is always safe and ready to restore.
+Whether you're a **Developer**, **Student**, **Researcher**, or **Linux Live USB user**, Secure Tabs keeps your workspace safe and ready to restore anytime.
 
 ---
 
 # ✨ Features
 
-## ⚡ One-Click Save
-
-Save every open tab and window instantly with a single click.
-
----
-
-## 🔐 End-to-End Local Encryption
-
-Every session is encrypted locally using modern **AES-256-GCM** encryption.
-
-Nobody can read your saved sessions without your password.
-
----
-
-## 🔑 Master Password
-
-Protect your encrypted vault using a secure master password.
-
-Password keys are generated with **PBKDF2**, making brute-force attacks significantly harder.
+- ⚡ Save all tabs with one click
+- 🔐 AES-256-GCM Encryption
+- 🔑 Master Password Protection
+- 🛡️ PBKDF2 Key Derivation
+- 💾 Export Encrypted Vault
+- 📂 Import Existing Vault
+- 🚀 Restore Previous Sessions
+- 🌙 Modern Minimal UI
+- ⚙️ Chrome Manifest V3
+- 🔒 100% Local Encryption
 
 ---
 
-## 💾 Export & Import
+# 🔒 Security
 
-Export encrypted vaults and restore them anytime.
+Secure Tabs follows a **Zero-Knowledge Architecture**.
 
-Perfect for:
+✔ Local Encryption
 
-- Linux Live USB
-- Portable Workstations
-- Multiple Devices
-- Secure Backup
+✔ No Cloud Storage
 
----
+✔ No Analytics
 
-## 🚀 Restore Sessions
+✔ No Tracking
 
-Restore hundreds of tabs exactly where you left them.
+✔ Native WebCrypto API
 
----
+Encryption Stack
 
-## 🌙 Modern UI
-
-Clean and minimalist interface inspired by modern design.
-
-No unnecessary clutter.
-
----
-
-## ⚙️ Manifest V3
-
-Built using the latest Chrome Extension standards.
-
-Fast.
-Secure.
-Future-proof.
-
----
-
-# 🛡️ Security
-
-Secure Tabs follows a **Zero-Knowledge** philosophy.
-
-## ✔ Local Encryption
-
-Your data is encrypted before storage.
-
----
-
-## ✔ No Cloud Storage
-
-Nothing is uploaded.
-
-Nothing is synced.
-
-Nothing is tracked.
-
----
-
-## ✔ No Analytics
-
-Secure Tabs never collects:
-
-- Browsing History
-- Personal Information
-- Telemetry
-- Tracking Data
-
----
-
-## ✔ WebCrypto API
-
-Uses the browser's native cryptography implementation for maximum performance and security.
-
-Algorithms:
-
-- AES-256-GCM
-- PBKDF2
-- Secure Random IV
+```
+AES-256-GCM
+PBKDF2
+Secure Random IV
+WebCrypto API
+```
 
 ---
 
@@ -148,33 +80,27 @@ Algorithms:
 git clone https://github.com/Nahid-mahmud555/secure-tabs-st.git
 ```
 
----
-
-## Load Extension
-
-1. Open Chrome
-
-2. Visit
+## Open Chrome Extensions
 
 ```
 chrome://extensions
 ```
 
-3. Enable
+Enable
 
 ```
 Developer Mode
 ```
 
-4. Click
+Click
 
 ```
 Load unpacked
 ```
 
-5. Select the project folder
+Select the cloned folder.
 
-6. Done 🎉
+Done 🎉
 
 ---
 
@@ -182,33 +108,23 @@ Load unpacked
 
 Imagine spending hours researching...
 
-Opening dozens of documentation pages...
+Opening 100+ tabs...
+
+Reading documentation...
 
 Watching tutorials...
 
-Reading Stack Overflow...
-
 Then suddenly...
 
-💥 Browser crash.
+💥 Browser Crash
 
-💥 Windows reinstall.
+💥 Windows Reinstall
 
-💥 Linux Live reboot.
+💥 Linux Live Reboot
 
-Everything is gone.
+Everything disappears.
 
----
-
-Secure Tabs solves that.
-
-Save.
-
-Encrypt.
-
-Restore.
-
-Continue where you left off.
+Secure Tabs lets you save your workspace securely and restore it anytime.
 
 ---
 
@@ -223,31 +139,30 @@ Continue where you left off.
 
 ---
 
-# 🔒 Encryption Workflow
+# 🔄 How It Works
 
 ```
-Tabs
-   │
-   ▼
-
-Session Data
-   │
-   ▼
-
-AES-256-GCM Encryption
-   │
-   ▼
-
+Browser Tabs
+      │
+      ▼
+Collect Session
+      │
+      ▼
+Encrypt (AES-256-GCM)
+      │
+      ▼
 Encrypted Vault
-   │
-   ▼
-
+      │
+      ▼
 Local Storage / Export File
+      │
+      ▼
+Restore Anytime
 ```
 
 ---
 
-# 📂 Project Structure
+# 📁 Project Structure
 
 ```
 secure-tabs-st/
@@ -259,6 +174,8 @@ secure-tabs-st/
 ├── styles/
 ├── background.js
 ├── manifest.json
+├── popup.html
+├── popup.js
 ├── README.md
 └── LICENSE
 ```
@@ -267,59 +184,59 @@ secure-tabs-st/
 
 # 🚀 Roadmap
 
-- [x] Session Saving
-- [x] Session Restore
-- [x] AES Encryption
-- [x] Master Password
-- [x] Export Vault
-- [x] Import Vault
-- [ ] Auto Backup
-- [ ] Multiple Vaults
-- [ ] Cloud Sync (Encrypted)
-- [ ] Firefox Support
-- [ ] Edge Support
-- [ ] Dark Theme Improvements
+- ✅ Save Sessions
+- ✅ Restore Sessions
+- ✅ AES Encryption
+- ✅ Master Password
+- ✅ Export Vault
+- ✅ Import Vault
+- ⏳ Auto Backup
+- ⏳ Multiple Vaults
+- ⏳ Encrypted Cloud Sync
+- ⏳ Firefox Support
+- ⏳ Microsoft Edge Support
+- ⏳ Better Dark Theme
 
 ---
 
 # 🤝 Contributing
 
-Contributions are always welcome.
+Contributions are welcome!
 
-Feel free to:
+1. Fork the repository
 
-- Fork the project
-- Create a feature branch
-- Submit a Pull Request
+2. Create a new branch
 
-Every contribution helps make Secure Tabs better.
+3. Commit your changes
+
+4. Open a Pull Request
 
 ---
 
 # 📜 License
 
-Released under the **MIT License**.
-
-See the **LICENSE** file for details.
+This project is licensed under the **MIT License**.
 
 ---
 
-<div align="center">
+# 🌟 Support
 
-## ⭐ Support the Project
+If Secure Tabs helps you,
 
-If Secure Tabs helped you,
-
-leave a ⭐ on GitHub.
+please consider giving this repository a ⭐ Star.
 
 It motivates future development.
 
 ---
 
-Made with ❤️ by **Nahid Mahmud**
+<div align="center">
 
-GitHub
+### Made with ❤️ by **Nahid Mahmud**
+
+**GitHub**
 
 https://github.com/Nahid-mahmud555
+
+⭐ Star • 🍴 Fork • 🛡️ Stay Secure
 
 </div>
