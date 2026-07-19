@@ -1,0 +1,115 @@
+:root {
+  --bg: #0f1014;
+  --bg-card: #1b1d24;
+  --border: #2b2d38;
+  --text: #e7e6e2;
+  --text-muted: #8b8d9a;
+  --accent: #e3a83b;
+  --accent-dim: #b8842a;
+  --accent-ink: #1a1305;
+  --danger: #e2645a;
+  --success: #6fbf8b;
+  --radius: 10px;
+  --font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.wrap { max-width: 640px; margin: 0 auto; padding: 32px 20px 60px; }
+
+.page-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+.page-header h1 { font-size: 20px; margin: 0; }
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 22px;
+  margin-bottom: 16px;
+}
+
+.card h2 { font-size: 15px; margin: 0 0 6px; }
+.muted { color: var(--text-muted); font-size: 13px; }
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-top: 1px solid var(--border);
+  gap: 16px;
+}
+.row:first-of-type { border-top: none; margin-top: 10px; }
+
+select, input[type="password"], input[type="text"] {
+  background: #14151a;
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 6px;
+  padding: 7px 9px;
+  font-size: 13.5px;
+  font-family: var(--font-ui);
+}
+
+input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); }
+
+.field { display: block; margin: 12px 0; }
+.field span {
+  display: block;
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  margin-bottom: 5px;
+}
+.field input { width: 100%; }
+
+.btn {
+  font-family: var(--font-ui);
+  font-size: 13.5px;
+  font-weight: 600;
+  border-radius: 7px;
+  border: 1px solid var(--border);
+  background: #23252e;
+  color: var(--text);
+  padding: 9px 14px;
+  cursor: pointer;
+  display: inline-block;
+}
+.btn:hover { border-color: var(--accent-dim); }
+
+.btn-primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn-primary:hover { background: var(--accent-dim); border-color: var(--accent-dim); }
+
+.btn-danger { color: var(--danger); }
+.btn-danger:hover { border-color: var(--danger); }
+
+.btn-row { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+.file-btn { position: relative; }
+
+.error { color: var(--danger); font-size: 13px; margin: 10px 0 0; }
+.success { color: var(--success); font-size: 13px; margin: 10px 0 0; }
+.save-hint { color: var(--success); font-size: 12.5px; margin-top: 8px; }
+
+.danger-zone { border-color: rgba(226, 100, 90, 0.35); }
+
+.footer-note {
+  color: var(--text-muted);
+  font-size: 12px;
+  text-align: center;
+  margin-top: 28px;
+}
