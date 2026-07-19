@@ -1,0 +1,291 @@
+/* Session Vault — popup styling
+   Design direction: a quiet, dark "security console" rather than a generic
+   SaaS panel. Near-black slate background, one brass/amber accent (the
+   vault-dial color), monospace used specifically for machine-facing data
+   (counts, timestamps) to read like a systems log rather than marketing copy. */
+
+:root {
+  --bg: #14151a;
+  --bg-raised: #1b1d24;
+  --bg-hover: #23252e;
+  --border: #2b2d38;
+  --text: #e7e6e2;
+  --text-muted: #8b8d9a;
+  --accent: #e3a83b;       /* vault-dial brass */
+  --accent-dim: #b8842a;
+  --accent-ink: #1a1305;
+  --danger: #e2645a;
+  --success: #6fbf8b;
+  --radius: 8px;
+  --font-ui: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-mono: "SF Mono", "Cascadia Code", "Roboto Mono", ui-monospace, Consolas, monospace;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  width: 380px;
+  max-height: 560px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-ui);
+  font-size: 13.5px;
+  line-height: 1.45;
+}
+
+.app { display: flex; flex-direction: column; max-height: 560px; }
+
+.pad { padding: 14px 16px; }
+.center { text-align: center; }
+.muted { color: var(--text-muted); }
+
+/* ---------- top bar ---------- */
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-raised);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+.topbar-actions { display: flex; gap: 4px; }
+
+.icon-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+  padding: 5px 7px;
+  border-radius: var(--radius);
+  color: var(--text-muted);
+}
+.icon-btn:hover { background: var(--bg-hover); color: var(--text); }
+
+/* ---------- screens ---------- */
+
+.screen { flex: 1; overflow-y: auto; }
+
+#screen-setup h1,
+#screen-unlock h1 {
+  font-size: 17px;
+  margin: 4px 0 6px;
+}
+
+.lock-icon {
+  font-size: 30px;
+  text-align: center;
+  margin-bottom: 4px;
+  filter: grayscale(0.2);
+}
+
+/* ---------- forms ---------- */
+
+.field { display: block; margin-bottom: 12px; }
+.field span {
+  display: block;
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  margin-bottom: 5px;
+}
+
+input[type="password"],
+input[type="text"],
+input[type="search"] {
+  width: 100%;
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text);
+  padding: 8px 10px;
+  font-size: 13.5px;
+  font-family: var(--font-ui);
+}
+input:focus {
+  outline: none;
+  border-color: var(--accent-dim);
+  box-shadow: 0 0 0 3px rgba(227, 168, 59, 0.18);
+}
+
+.error {
+  color: var(--danger);
+  font-size: 12.5px;
+  margin: -4px 0 10px;
+}
+
+.toast {
+  color: var(--success);
+  font-size: 12.5px;
+  margin: 0 16px 8px;
+}
+
+/* ---------- buttons ---------- */
+
+.btn {
+  font-family: var(--font-ui);
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--bg-hover);
+  color: var(--text);
+  padding: 8px 12px;
+  cursor: pointer;
+}
+.btn:hover { border-color: var(--accent-dim); }
+.btn:active { transform: translateY(1px); }
+
+.btn-block { width: 100%; }
+
+.btn-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}
+.btn-primary:hover { background: var(--accent-dim); border-color: var(--accent-dim); }
+
+.btn-danger { color: var(--danger); }
+.btn-danger:hover { border-color: var(--danger); }
+
+.btn-small { padding: 5px 9px; font-size: 12px; }
+
+/* ---------- save / search rows ---------- */
+
+.save-row { display: flex; gap: 6px; border-bottom: 1px solid var(--border); }
+.save-row input[type="text"] { flex: 1; min-width: 0; }
+.save-row select {
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: var(--radius);
+  font-size: 12.5px;
+  padding: 0 6px;
+}
+
+.search-row { padding-top: 10px; padding-bottom: 8px; }
+
+/* ---------- session list ---------- */
+
+.session-list {
+  list-style: none;
+  margin: 0;
+  padding: 0 8px 10px;
+}
+
+.session-item {
+  background: var(--bg-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 6px;
+  overflow: hidden;
+}
+
+.session-item-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 4px 4px 4px 2px;
+}
+
+.session-toggle {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  padding: 8px 6px;
+}
+
+.chevron {
+  color: var(--accent);
+  font-size: 11px;
+  transition: transform 0.15s ease;
+  flex-shrink: 0;
+}
+.session-toggle[aria-expanded="true"] .chevron { transform: rotate(90deg); }
+
+.session-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.session-meta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  padding-right: 10px;
+}
+
+.session-item-body { padding: 0 10px 10px; }
+
+.tab-preview {
+  list-style: none;
+  margin: 0 0 8px;
+  padding: 0;
+  max-height: 140px;
+  overflow-y: auto;
+  border-top: 1px solid var(--border);
+  padding-top: 6px;
+}
+
+.tab-preview li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 0;
+  font-size: 12px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tab-preview img {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  border-radius: 2px;
+}
+
+.tab-preview .favicon-fallback {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  border-radius: 2px;
+  background: var(--border);
+  display: inline-block;
+}
+
+.session-actions {
+  display: flex;
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+/* ---------- scrollbars ---------- */
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
