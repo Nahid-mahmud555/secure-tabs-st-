@@ -1,242 +1,124 @@
-<div align="center">
+# Session Vault
 
-# 🛡️ Secure Tabs (ST)
+A privacy-first browser extension for saving and restoring browser sessions
+(windows + tabs), encrypted at rest with a master password. Built on
+Manifest V3, works in both Chrome and Firefox from a single codebase.
 
-### **Your Encrypted Workspace**
-*Private • Secure • Fast • Minimal*
+## Install (unpacked / development)
 
-<p>
-  <img src="https://img.shields.io/badge/Manifest-V3-orange?style=for-the-badge" alt="Manifest V3">
-  <img src="https://img.shields.io/badge/Encryption-AES--256--GCM-success?style=for-the-badge" alt="AES-256-GCM">
-  <img src="https://img.shields.io/badge/Security-Zero--Knowledge-blue?style=for-the-badge" alt="Zero Knowledge">
-  <img src="https://img.shields.io/badge/License-MIT-red?style=for-the-badge" alt="MIT">
-</p>
+One `manifest.json` works for both browsers — it declares the background
+script as `service_worker`, which modern Chrome and modern Firefox
+(121+) both understand natively.
 
-<p>
-A modern privacy-first browser extension that securely saves, encrypts, and restores your browsing sessions.
-</p>
+**Chrome / Edge / Brave:**
+1. Go to `chrome://extensions`
+2. Enable **Developer mode** (top right)
+3. Click **Load unpacked** and select the `session-vault` folder
 
-⭐ **If you like this project, don't forget to Star the repository!**
+**Firefox (121+):**
+1. Go to `about:debugging#/runtime/this-firefox`
+2. Click **Load Temporary Add-on…**
+3. Select `manifest.json` inside the `session-vault` folder
+4. ⚠️ Firefox's "Load Temporary Add-on" is, as the name says, temporary —
+   it's removed when Firefox fully closes. You'll need to repeat step
+   1–3 each time you restart Firefox during testing. (Chrome's "Load
+   unpacked" does persist across restarts — that's a Chrome-specific
+   dev-mode behavior, not something this extension controls.) For a
+   permanent Firefox install, the extension needs to be signed via
+   `web-ext sign` / AMO.
 
-</div>
+If you're on an older Firefox that doesn't yet support MV3 service
+workers, you'll see a harmless console warning about `service_worker`
+being unrecognized, and the extension may not run its background logic
+(auto-lock timer, context menu). Updating Firefox resolves this.
 
----
-
-# 📖 About
-
-**Secure Tabs (ST)** is a modern browser extension built for people who care about **privacy**, **security**, and **productivity**.
-
-Unlike ordinary session managers, Secure Tabs encrypts every saved session locally before storage. Your browsing sessions never leave your device, giving you complete ownership of your data.
-
-Whether you're a **Developer**, **Student**, **Researcher**, or **Linux Live USB user**, Secure Tabs keeps your workspace safe and ready to restore anytime.
-
----
-
-# ✨ Features
-
-- ⚡ Save all tabs with one click
-- 🔐 AES-256-GCM Encryption
-- 🔑 Master Password Protection
-- 🛡️ PBKDF2 Key Derivation
-- 💾 Export Encrypted Vault
-- 📂 Import Existing Vault
-- 🚀 Restore Previous Sessions
-- 🌙 Modern Minimal UI
-- ⚙️ Chrome Manifest V3
-- 🔒 100% Local Encryption
-
----
-
-# 🔒 Security
-
-Secure Tabs follows a **Zero-Knowledge Architecture**.
-
-✔ Local Encryption
-
-✔ No Cloud Storage
-
-✔ No Analytics
-
-✔ No Tracking
-
-✔ Native WebCrypto API
-
-Encryption Stack
+## Architecture
 
 ```
-AES-256-GCM
-PBKDF2
-Secure Random IV
-WebCrypto API
+session-vault/
+├── manifest.json          MV3 manifest, works unmodified in Chrome and
+│                          Firefox 121+ (background.service_worker)
+├── background.js          Service worker: auto-lock alarm, idle/screen-lock
+│                          detection, context menu
+├── popup.html/js/css      Toolbar popup: setup, unlock, session list, save
+├── options.html/js/css    Settings page: auto-lock config, password change,
+│                          encrypted backup export/import, vault wipe
+└── lib/
+    ├── browser-polyfill.js  Normalizes chrome.* / browser.* into one `api`
+    ├── crypto.js             WebCrypto only: PBKDF2 + AES-256-GCM
+    └── vault.js              Storage schema, unlock lifecycle, session CRUD
 ```
 
----
+`lib/vault.js` is imported directly as an ES module by **all three**
+contexts (background, popup, options), rather than routed through message
+passing. They all read/write the same `chrome.storage.local` /
+`chrome.storage.session` keys, so there's a single source of truth and no
+background service worker holding state that could vanish on termination.
 
-# 🚀 Installation
+## Security model
 
-## Clone Repository
+- **Encryption:** AES-256-GCM. Each write gets a fresh random 96-bit IV.
+- **Key derivation:** PBKDF2-HMAC-SHA256, 250,000 iterations, random 128-bit
+  salt per vault.
+- **Password verification:** a random secret is encrypted at vault-creation
+  time and re-decrypted on unlock; the password itself is never stored.
+- **Key caching while unlocked:** the derived AES key is cached in
+  `chrome.storage.session` — an in-memory-only storage area that is never
+  written to disk and is cleared automatically when the browser closes.
+  This is what lets the vault survive MV3 service-worker restarts without
+  falling back to weaker persistence.
+- **Auto-lock:** a `chrome.alarms` tick (every 60s) enforces an idle
+  timeout (default 15 min, configurable). `chrome.idle` also forces an
+  immediate lock on system idle or screen lock, if enabled in Settings.
+- **Brute-force throttling:** repeated failed unlock attempts trigger
+  client-side exponential backoff. This is defense-in-depth, not a
+  substitute for a strong password — anyone with direct filesystem access
+  to browser profile storage could still attempt offline brute force
+  against the PBKDF2 hash, which is inherent to any local-vault design.
+- **No network access whatsoever.** There is no `fetch`, `XMLHttpRequest`,
+  or remote script anywhere in this codebase, and the CSP
+  (`script-src 'self'`) blocks remote code from ever being loaded, even by
+  an injected script.
 
-```bash
-git clone https://github.com/Nahid-mahmud555/secure-tabs-st.git
-```
+## What's stored (and what isn't)
 
-## Open Chrome Extensions
+Session Vault snapshots **window/tab metadata only**: URL, title, favicon
+URL, pinned state. It does **not** capture cookies, form data, browsing
+history, or authentication state — restoring a session reopens the same
+tabs, it doesn't log you back in. If you need that, that's a materially
+different (and riskier) product; see "Possible extensions" below.
 
-```
-chrome://extensions
-```
+## Permissions rationale
 
-Enable
+| Permission | Why |
+|---|---|
+| `storage` | Persist the encrypted vault + settings; cache the unlock key in RAM-only session storage |
+| `tabs` | Read tab URLs/titles across all windows to build a session snapshot, and open tabs on restore |
+| `alarms` | Periodic auto-lock enforcement even while the popup is closed |
+| `idle` | Immediate lock on system idle / screen lock |
+| `contextMenus` | Optional one-click "save all windows" shortcut from the toolbar icon |
 
-```
-Developer Mode
-```
+No `host_permissions` are requested — the extension never reads page
+content, only tab metadata exposed by the `tabs` API.
 
-Click
+## Known limitations
 
-```
-Load unpacked
-```
+- If the master password is lost, the vault **cannot** be recovered by
+  design (there is no backdoor, server-side reset, or recovery key).
+- Firefox versions older than 121 don't reliably support MV3 background
+  service workers; the manifest's `strict_min_version` is set accordingly.
+  On an older Firefox you may see a console warning and the background
+  logic (auto-lock alarm, context menu) simply won't run — updating
+  Firefox resolves it.
+- `chrome.action.openPopup()` (used by the context-menu shortcut when
+  locked) requires a recent Chromium version and is a no-op fallback
+  elsewhere.
 
-Select the cloned folder.
+## Possible extensions
 
-Done 🎉
-
----
-
-# 💡 Why Secure Tabs?
-
-Imagine spending hours researching...
-
-Opening 100+ tabs...
-
-Reading documentation...
-
-Watching tutorials...
-
-Then suddenly...
-
-💥 Browser Crash
-
-💥 Windows Reinstall
-
-💥 Linux Live Reboot
-
-Everything disappears.
-
-Secure Tabs lets you save your workspace securely and restore it anytime.
-
----
-
-# 👨‍💻 Perfect For
-
-- 👨‍💻 Developers
-- 🐧 Linux Users
-- 🎓 Students
-- 🔬 Researchers
-- 💼 Professionals
-- 🌐 Heavy Browser Users
-
----
-
-# 🔄 How It Works
-
-```
-Browser Tabs
-      │
-      ▼
-Collect Session
-      │
-      ▼
-Encrypt (AES-256-GCM)
-      │
-      ▼
-Encrypted Vault
-      │
-      ▼
-Local Storage / Export File
-      │
-      ▼
-Restore Anytime
-```
-
----
-
-# 📁 Project Structure
-
-```
-secure-tabs-st/
-
-├── assets/
-├── icons/
-├── popup/
-├── scripts/
-├── styles/
-├── background.js
-├── manifest.json
-├── popup.html
-├── popup.js
-├── README.md
-└── LICENSE
-```
-
----
-
-# 🚀 Roadmap
-
-- ✅ Save Sessions
-- ✅ Restore Sessions
-- ✅ AES Encryption
-- ✅ Master Password
-- ✅ Export Vault
-- ✅ Import Vault
-- ⏳ Auto Backup
-- ⏳ Multiple Vaults
-- ⏳ Encrypted Cloud Sync
-- ⏳ Firefox Support
-- ⏳ Microsoft Edge Support
-- ⏳ Better Dark Theme
-
----
-
-# 🤝 Contributing
-
-Contributions are welcome!
-
-1. Fork the repository
-
-2. Create a new branch
-
-3. Commit your changes
-
-4. Open a Pull Request
-
----
-
-# 📜 License
-
-This project is licensed under the **MIT License**.
-
----
-
-# 🌟 Support
-
-If Secure Tabs helps you,
-
-please consider giving this repository a ⭐ Star.
-
-It motivates future development.
-
----
-
-<div align="center">
-
-### Made with ❤️ by **Nahid Mahmud**
-
-**GitHub**
-
-https://github.com/Nahid-mahmud555
-
-⭐ Star • 🍴 Fork • 🛡️ Stay Secure
-
-</div>
+- Per-session tags/folders
+- Drag-to-reorder tabs before restoring
+- Keyboard-driven quick-save (the `Ctrl+Shift+V` command already opens the
+  popup; a dedicated no-UI "quick save" command could be added)
+- Optional passphrase-derived recovery codes (would need careful design —
+  a recovery path is inherently a second way in)
