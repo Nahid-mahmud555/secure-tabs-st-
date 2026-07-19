@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self'; object-src 'self'" />
+  <title>Session Vault</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <img src="icons/icon32.png" alt="" width="20" height="20" />
+        <span>Session Vault</span>
+      </div>
+      <div class="topbar-actions">
+        <button id="lockBtn" class="icon-btn" title="Lock vault" hidden>🔒</button>
+        <button id="optionsBtn" class="icon-btn" title="Settings">⚙️</button>
+      </div>
+    </header>
+
+    <!-- ===== Screen: Loading ===== -->
+    <section id="screen-loading" class="screen">
+      <p class="muted center">Loading…</p>
+    </section>
+
+    <!-- ===== Screen: First-run setup ===== -->
+    <section id="screen-setup" class="screen" hidden>
+      <div class="pad">
+        <h1>Create your master password</h1>
+        <p class="muted">
+          This password encrypts every saved session with AES-256. It is never stored or sent
+          anywhere — if you forget it, your saved sessions cannot be recovered.
+        </p>
+        <form id="setupForm">
+          <label class="field">
+            <span>Master password</span>
+            <input type="password" id="setupPassword" minlength="8" required autocomplete="new-password" />
+          </label>
+          <label class="field">
+            <span>Confirm password</span>
+            <input type="password" id="setupPasswordConfirm" minlength="8" required autocomplete="new-password" />
+          </label>
+          <p class="error" id="setupError" hidden></p>
+          <button type="submit" class="btn btn-primary btn-block">Create Vault</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- ===== Screen: Unlock ===== -->
+    <section id="screen-unlock" class="screen" hidden>
+      <div class="pad">
+        <div class="lock-icon">🔐</div>
+        <h1>Vault Locked</h1>
+        <form id="unlockForm">
+          <label class="field">
+            <span>Master password</span>
+            <input type="password" id="unlockPassword" required autocomplete="current-password" autofocus />
+          </label>
+          <p class="error" id="unlockError" hidden></p>
+          <button type="submit" class="btn btn-primary btn-block">Unlock</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- ===== Screen: Main vault ===== -->
+    <section id="screen-main" class="screen" hidden>
+      <div class="pad save-row">
+        <input type="text" id="sessionNameInput" placeholder="Session name (optional)" />
+        <select id="saveScope" title="What to save">
+          <option value="all">All windows</option>
+          <option value="current">Current window</option>
+        </select>
+        <button id="saveBtn" class="btn btn-primary">＋ Save</button>
+      </div>
+
+      <div class="pad search-row">
+        <input type="search" id="searchInput" placeholder="Search sessions…" />
+      </div>
+
+      <p class="error" id="mainError" hidden></p>
+      <p class="toast" id="toast" hidden></p>
+
+      <ul id="sessionList" class="session-list"></ul>
+
+      <p id="emptyState" class="muted center pad" hidden>
+        No saved sessions yet. Save your current tabs to get started.
+      </p>
+    </section>
+  </div>
+
+  <template id="sessionItemTemplate">
+    <li class="session-item">
+      <div class="session-item-header">
+        <button class="session-toggle" aria-expanded="false">
+          <span class="chevron">▸</span>
+          <span class="session-name"></span>
+        </button>
+        <span class="session-meta"></span>
+      </div>
+      <div class="session-item-body" hidden>
+        <ul class="tab-preview"></ul>
+        <div class="session-actions">
+          <button class="btn btn-small btn-primary action-restore">Restore</button>
+          <button class="btn btn-small action-rename">Rename</button>
+          <button class="btn btn-small btn-danger action-delete">Delete</button>
+        </div>
+      </div>
+    </li>
+  </template>
+
+  <script type="module" src="popup.js"></script>
+</body>
+</html>
